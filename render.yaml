@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: Pervye_project
+    runtime: python
+    buildCommand: unzip -o pervye_site.zip && cd pervye_site && pip install psycopg2-binary dj-database-url && pip install -r requirements.txt && python manage.py collectstatic --noinput
+    startCommand: gunicorn pervye_site.pervye_platform.wsgi:application
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.10.12
