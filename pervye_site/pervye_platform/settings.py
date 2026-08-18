@@ -16,7 +16,8 @@ SECRET_KEY = 'django-insecure-pervye-platform-secret-key-2026-hackathon'
 DEBUG = True
 
 # Разрешенные хосты (добавлен локальный хост и порты хакатона)
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '0.0.0.0']
+ALLOWED_HOSTS = ['://onrender.com', 'localhost', '127.0.0.1']
+
 
 # УСТАНОВЛЕННЫЕ ПРИЛОЖЕНИЯ ПЛАТФОРМЫ
 INSTALLED_APPS = [
