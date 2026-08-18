@@ -1,0 +1,180 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вход в систему — Движение Первых</title>
+    
+    <!-- Подключаем Bootstrap 5 -->
+    <link href="https://jsdelivr.net" rel="stylesheet">
+    
+    <!-- Подключаем шрифт Inter для обычного текста -->
+    <link rel="preconnect" href="https://googleapis.com">
+    <link rel="preconnect" href="https://gstatic.com" crossorigin>
+    <link href="https://googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --pervye-red: #D90912;
+            --pervye-blue: #3366CC;
+            --pervye-black: #1E293B;
+            --pervye-white: #FFFFFF;
+            --text-slate: #64748B;
+        }
+        
+        /* Глобальный шрифт для обычного текста по брендбуку (Pervye Book) */
+        * { 
+            font-family: 'Inter', system-ui, -apple-system, sans-serif !important; 
+            box-sizing: border-box; 
+        }
+        
+        body {
+            background: linear-gradient(135deg, #F8FAFC 0%, #E2E8F0 100%);
+            min-height: 100vh; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            padding: 20px;
+            margin: 0;
+        }
+        
+        /* Белая карточка формы авторизации */
+        .login-card {
+            background: #FFFFFF; 
+            border: 2px solid #E2E8F0; 
+            border-radius: 3px !important; /* Строго 3px по брендбуку */
+            padding: 40px 32px; 
+            max-width: 440px; 
+            width: 100%;
+            box-shadow: 0 10px 30px rgba(30, 41, 59, 0.04); 
+            position: relative;
+        }
+        
+        /* Декоративная синяя полоса наверху карточки */
+        .login-card::before {
+            content: ''; 
+            position: absolute; 
+            top: 0; left: 0; right: 0; 
+            height: 4px; 
+            background: var(--pervye-blue);
+        }
+        
+        /* Имитация акцидентного шрифта Pervye Extended Bold */
+        .brand-title, .btn-pervye {
+            font-family: 'Arial Black', 'Impact', sans-serif !important; 
+            font-stretch: expanded !important; /* Растягиваем буквы по ширине */
+            font-weight: 900 !important; 
+            letter-spacing: -0.04em !important; /* Плотный межбуквенный интервал */
+            text-transform: uppercase;
+        }
+        
+        .brand-title {
+            font-size: 26px; 
+            text-align: center;
+            margin-bottom: 35px; 
+            line-height: 1.1;
+        }
+        
+        /* Кнопка отправки формы по ТЗ */
+        .btn-pervye {
+            background: var(--pervye-blue); 
+            color: white !important; 
+            border: none; 
+            width: 100%;
+            padding: 15px; 
+            border-radius: 3px !important; 
+            font-size: 13px;
+            letter-spacing: 0.5px; 
+            transition: opacity 0.15s ease; 
+            cursor: pointer;
+        }
+        .btn-pervye:hover { 
+            opacity: 0.9; 
+        }
+        
+        /* Стилизация полей ввода (сброс глобальных растяжений заголовков) */
+        .form-control { 
+            border-radius: 3px !important; 
+            border: 2px solid #CBD5E1; 
+            padding: 12px 16px; 
+            font-size: 14px; 
+            width: 100% !important; 
+            font-family: 'Inter', sans-serif !important; 
+            font-stretch: normal !important; /* Буквы внутри поля ввода не растягиваются */
+            letter-spacing: normal !important; 
+            background-color: #FFFFFF;
+        }
+        .form-control:focus { 
+            border-color: var(--pervye-blue); 
+            box-shadow: none; 
+            background-color: #FFFFFF;
+        }
+        
+        /* Текстовые подписи к полям ввода по брендбуку (Pervye Book) */
+        .form-label { 
+            font-size: 12px; 
+            font-weight: 700; 
+            text-transform: uppercase; 
+            color: var(--pervye-black); 
+            font-stretch: normal !important;
+            letter-spacing: normal !important;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="login-card">
+        <!-- Логотип платформы -->
+        <div class="brand-title">
+            <span style="color: var(--pervye-blue);">Движение</span>
+            <span style="color: var(--pervye-red);">Первых</span>
+        </div>
+
+        <!-- Форма авторизации -->
+        <form method="POST" style="display: flex; flex-direction: column; gap: 24px; width: 100%;">
+            {% csrf_token %}
+            
+            <!-- Ошибки валидации со стороны Django бэкенда -->
+            {% if form.non_field_errors %}
+                <div class="alert alert-danger p-2" style="font-size: 13px; border-radius: 3px; margin: 0; font-stretch: normal !important; letter-spacing: normal !important;">
+                    {{ form.non_field_errors.0 }}
+                </div>
+            {% endif %}
+
+            <!-- БЛОК ВВОДА ИМЕНИ ПОЛЬЗОВАТЕЛЯ -->
+            <div style="display: flex; flex-direction: column; gap: 8px; width: 100%;">
+                <label class="form-label" style="margin: 0; display: block;">
+                    Имя пользователя / Логин
+                </label>
+                <input type="text" name="username" class="form-control" placeholder="Введите ваш логин" required>
+            </div>
+            
+            <!-- БЛОК ВВОДА ПАРОЛЯ -->
+            <div style="display: flex; flex-direction: column; gap: 8px; width: 100%;">
+                <label class="form-label" style="margin: 0; display: block;">
+                    Пароль
+                </label>
+                <input type="password" name="password" class="form-control" placeholder="Введите ваш пароль" required>
+            </div>
+
+            <!-- ФИРМЕННАЯ КНОПКА ВХОДА -->
+            <button type="submit" class="btn-pervye" style="margin-top: 5px;">
+                Войти в аккаунт
+            </button>
+            
+            <!-- Ссылка возврата на главную -->
+            <div class="text-center" style="margin-top: 5px;">
+                <a href="/" style="font-size: 13px; color: var(--text-slate); text-decoration: none; font-weight: 600; font-stretch: normal !important; letter-spacing: normal !important;">
+                    ← На главную
+                </a>
+            </div>
+        </form>
+    </div>
+
+</body>
+</html>
+
+
+ 
+

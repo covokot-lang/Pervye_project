@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title alt="Логотип Движения Первых">{{ lesson.title }} — Движение Первых</title>
+    
+    <!-- Шрифты по брендбуку -->
+    <link rel="preconnect" href="https://googleapis.com">
+    <link rel="preconnect" href="https://gstatic.com" crossorigin>
+    <link href="https://googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Unbounded:wght@200..900&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            /* Константы цвета со страницы 13 брендбука */
+            --pervye-red: #d90912;     /* Maximum Red */
+            --pervye-blue: #3366CC;    /* Pantone 2386 C */
+            --pervye-black: #000000;   /* Black 6C */
+            --pervye-white: #ffffff;   /* White */
+            --bg-light: #F8FAFC;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-light);
+            font-family: "Montserrat", sans-serif;
+            color: var(--pervye-black);
+            padding-bottom: 80px;
+            line-height: 1.7;
+        }
+
+        h1, h2, h3, .logo {
+            font-family: "Unbounded", sans-serif;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: -0.5px;
+            line-height: 1.4;
+        }
+
+        /* Шапка платформы */
+        .header {
+            background: var(--pervye-white);
+            border-bottom: 2px solid #E2E8F0;
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .container {
+            max-width: 900px; /* Суженная база для удобного чтения лонгридов */
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 18px;
+            text-decoration: none;
+            color: var(--pervye-blue);
+        }
+
+        .logo span {
+            color: var(--pervye-red);
+        }
+
+        .back-link {
+            text-decoration: none;
+            color: #475569;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        /* Подача материала (Комбинированный контент) */
+        .lesson-header {
+            margin: 40px 0 24px;
+        }
+
+        .badge {
+            display: inline-block;
+            background: #EFF6FF;
+            color: var(--pervye-blue);
+            font-size: 11px;
+            font-weight: 700;
+            padding: 6px 14px;
+            border-radius: 6px;
+            margin-bottom: 16px;
+            text-transform: uppercase;
+        }
+
+        .lesson-title {
+            font-size: 24px;
+            color: var(--pervye-black);
+        }
+
+        /* Современный Видеоплеер */
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%; /* Пропорции 16:9 */
+            height: 0;
+            overflow: hidden;
+            border-radius: 12px;
+            background: #000;
+            margin-bottom: 40px;
+            border: 2px solid #E2E8F0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        /* Текстовая область лонгрида (Шрифт Pervye Book) */
+        .content-body {
+            background: var(--pervye-white);
+            border-radius: 12px;
+            border-top: 6px solid var(--pervye-red); /* Фирменная красная плашка */
+            padding: 40px;
+            border-left: 1px solid #E2E8F0;
+            border-right: 1px solid #E2E8F0;
+            border-bottom: 1px solid #E2E8F0;
+            font-size: 16px;
+            font-weight: 500;
+            color: #334155;
+            white-space: pre-line; /* Сохраняет абзацы из панели администратора */
+        }
+
+        /* Кнопка сохранения прогресса по ТЗ */
+        .action-area {
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .btn-complete {
+            display: inline-block;
+            text-decoration: none;
+            background: var(--pervye-red);
+            color: var(--pervye-white);
+            padding: 16px 40px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 15px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: background 0.2s, transform 0.2s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-complete:hover {
+            background: #b0070e;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Шапка -->
+    <header class="header">
+        <div class="container header-content">
+            <a href="/" class="logo" alt="Логотип Движения Первых">ДВИЖЕНИЕ <span>ПЕРВЫХ</span></a>
+            <a href="/course/{{ lesson.module.course.id }}/" class="back-link">← К курсу</a>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Заголовок урока -->
+        <div class="lesson-header">
+            <span class="badge">{{ lesson.module.title }}</span>
+            <h1 class="lesson-title">{{ lesson.title }}</h1>
+        </div>
+
+        <!-- ИНТЕГРАЦИЯ ВИДЕО (Если ссылка заполнена в админке) -->
+        {% if lesson.video_url %}
+        <div class="video-container">
+            <!-- Скрипт автоматически преобразует ссылки YouTube/VK в плеер -->
+            <iframe src="{{ lesson.video_url }}" allowfullscreen></iframe>
+        </div>
+        {% endif %}
+
+        <!-- ТЕКСТ ЛОНГРИДА -->
+        <article class="content-body">
+            {{ lesson.content }}
+        </article>
+        <!-- БЛОК ИНТЕРАКТИВНОГО ТЕСТА (По ТЗ конкурса) -->
+        <div style="background: var(--pervye-white); border-radius: 12px; border-top: 6px solid var(--pervye-blue); padding: 40px; margin-top: 40px; border-left: 1px solid #E2E8F0; border-right: 1px solid #E2E8F0; border-bottom: 1px solid #E2E8F0;">
+            <h3 style="font-size: 16px; color: var(--pervye-blue); margin-bottom: 20px;">Интерактивная проверка знаний</h3>
+            
+            <div id="quiz-container">
+                <p style="font-weight: 600; font-size: 15px; margin-bottom: 16px; color: var(--pervye-black);">
+                    Вопрос: Какое правило оформления логотипа «Движения Первых» является обязательным согласно официальному брендбуку?
+                </p>
+                
+                <!-- Варианты ответов в виде интерактивных кнопок -->
+                <div style="display: flex; flex-direction: column; gap: 12px;">
+                    <button type="button" class="quiz-option-btn" onclick="checkAnswer(this, false)" style="width: 100%; text-align: left; padding: 14px 20px; background: #F8FAFC; border: 2px solid #E2E8F0; border-radius: 8px; font-family: 'Montserrat', sans-serif; font-size: 14px; font-weight: 500; cursor: pointer; transition: 0.2s; outline: none;">
+                        А) Разрешено использовать знак «стрелки-единицы» отдельно, без текстового слова «Первые».
+                    </button>
+                    
+                    <button type="button" class="quiz-option-btn" onclick="checkAnswer(this, true)" style="width: 100%; text-align: left; padding: 14px 20px; background: #F8FAFC; border: 2px solid #E2E8F0; border-radius: 8px; font-family: 'Montserrat', sans-serif; font-size: 14px; font-weight: 500; cursor: pointer; transition: 0.2s; outline: none;">
+                        Б) Категорически запрещено использовать знак «стрелки-единицы» без слова «Первые».
+                    </button>
+                    
+                    <button type="button" class="quiz-option-btn" onclick="checkAnswer(this, false)" style="width: 100%; text-align: left; padding: 14px 20px; background: #F8FAFC; border: 2px solid #E2E8F0; border-radius: 8px; font-family: 'Montserrat', sans-serif; font-size: 14px; font-weight: 500; cursor: pointer; transition: 0.2s; outline: none;">
+                        В) Логотип можно перекрашивать в любые яркие неоновые цвета по усмотрению дизайнера.
+                    </button>
+                </div>
+                
+                <!-- Поле вывода результата -->
+                <div id="quiz-result" style="margin-top: 20px; font-weight: 700; font-size: 14px; display: none; padding: 12px; border-radius: 6px; text-align: center;"></div>
+            </div>
+        </div>
+
+        <!-- Скрипт мгновенной логики проверки ответа без перезагрузки -->
+        <script>
+            function checkAnswer(button, isCorrect) {
+                // Блокируем остальные кнопки, чтобы нельзя было нажимать по кругу
+                const buttons = document.querySelectorAll('.quiz-option-btn');
+                buttons.forEach(btn => {
+                    btn.disabled = true;
+                    btn.style.cursor = 'not-allowed';
+                });
+
+                const resultDiv = document.getElementById('quiz-result');
+                resultDiv.style.display = 'block';
+
+                if (isCorrect) {
+                    // Если ответ верный — окрашиваем кнопку в зеленый цвет Движения
+                    button.style.background = '#D1FAE5';
+                    button.style.borderColor = '#10B981';
+                    button.style.color = '#065F46';
+                    
+                    resultDiv.style.background = '#D1FAE5';
+                    resultDiv.style.color = '#065F46';
+                    resultDiv.innerText = '🎉 Абсолютно верно! Вы отлично изучили официальный брендбук конкурса.';
+                } else {
+                    // Если ответ неверный — окрашиваем кнопку в красный
+                    button.style.background = '#FEE2E2';
+                    button.style.borderColor = '#EF4444';
+                    button.style.color = '#991B1B';
+                    
+                    resultDiv.style.background = '#FEE2E2';
+                    resultDiv.style.color = '#991B1B';
+                    resultDiv.innerText = '❌ Неправильно. Напоминаем: использовать стрелку-единицу без слова «Первые» строго запрещено правила брендбука!';
+                }
+            }
+        </script>
+
+        <!-- РАБОЧАЯ КНОПКА СОХРАНЕНИЯ ПРОГРЕССА (Отправляет данные в базу Django) -->
+        <div class="action-area">
+            <form method="POST" action="">
+                {% csrf_token %}
+                <button type="submit" class="btn-complete">
+                    Завершить урок и сохранить прогресс ✓
+                </button>
+            </form>
+        </div>
+
+    </div>
+
+</body>
+</html>

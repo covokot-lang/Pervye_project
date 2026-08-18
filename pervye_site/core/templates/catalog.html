@@ -1,0 +1,444 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru" class="h-100">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Движение Первых — Платформа Обучения</title>
+
+    <!-- Подключаем Bootstrap 5 -->
+    <link href="https://jsdelivr.net" rel="stylesheet">
+    
+    <!-- Фирменные шрифты Движения Первых -->
+    <link rel="preconnect" href="https://googleapis.com">
+    <link rel="preconnect" href="https://gstatic.com" crossorigin>
+    <link href="https://googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- Подключение иконки вкладки -->
+    <link rel="icon" type="image/x-icon" href="{% static 'core/favicon.ico' %}">
+
+    <style>
+    :root {
+        --pervye-red: #D90912;
+        --pervye-blue: #3366CC;
+        --pervye-black: #1E293B;
+        --pervye-white: #FFFFFF;
+        --bg-slate: #F8FAFC;
+        --text-slate: #64748B;
+    }
+    
+    /* Глобальный шрифт для обычного текста по брендбуку */
+    * {
+        font-family: 'Montserrat', sans-serif;
+        box-sizing: border-box;
+    }
+    body {
+        background-color: var(--pervye-white);
+        color: var(--pervye-black);
+        -webkit-font-smoothing: antialiased;
+        margin: 0;
+        padding: 0;
+    }
+    
+    /* ИМИТАЦИЯ ШРИФТА PERVYE EXTENDED BOLD ДЛЯ КРУПНЫХ ЗАГЛОВКОВ */
+    .hero-main-title, 
+    .brand-word-blue, 
+    .brand-word-red, 
+    .filter-panel-pervye h2, 
+    .pervye-card-title {
+        font-family: 'Arial Black', 'Impact', sans-serif !important;
+        font-stretch: expanded !important; /* Принудительно растягиваем буквы в ширину */
+        font-weight: 900 !important;
+        letter-spacing: -0.04em !important; /* Сжимаем межбуквенный интервал как на примере */
+        line-height: 1.1 !important;
+    }
+    
+    /* ШАПКА САЙТА */
+    .navbar-pervye {
+        background-color: var(--pervye-white);
+        border-bottom: 2px solid #E2E8F0;
+        padding: 16px 0;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        width: 100%;
+    }
+    .navbar-container-custom {
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        width: 100%;
+    }
+    .brand-logo-container {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        text-decoration: none !important;
+    }
+    .brand-word-blue {
+        font-size: 24px;
+        text-transform: uppercase;
+        color: var(--pervye-blue);
+    }
+    .brand-word-red {
+        font-size: 24px;
+        text-transform: uppercase;
+        color: var(--pervye-red);
+    }
+    .nav-links-container {
+        display: flex;
+        gap: 28px;
+        align-items: center;
+    }
+    .nav-link-pervye {
+        color: var(--pervye-black);
+        font-weight: 700;
+        font-size: 13.5px;
+        text-transform: uppercase;
+        text-decoration: none;
+        transition: color 0.15s ease;
+    }
+    .nav-link-pervye:hover {
+        color: var(--pervye-blue);
+    }
+
+    /* ПОЛНОЭКРАННЫЙ ПРИВЕТСТВЕННЫЙ БЛОК */
+    .premium-hero-screen {
+        background: radial-gradient(circle at 80% 20%, rgba(51, 102, 204, 0.03) 0%, rgba(255, 255, 255, 1) 60%), var(--pervye-white);
+        min-height: 85vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 60px 0;
+        width: 100%;
+    }
+    .hero-main-title {
+        font-size: 46px;
+        color: var(--pervye-black);
+        max-width: 950px;
+        margin: 0 auto 24px auto;
+        text-transform: uppercase;
+    }
+    .hero-main-title span {
+        color: var(--pervye-red);
+    }
+    .hero-sub-title {
+        font-size: 16px;
+        font-weight: 600;
+        color: var(--text-slate);
+        margin-bottom: 35px;
+        letter-spacing: 0.2px;
+        max-width: 800px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .btn-hero-action {
+        background-color: var(--pervye-blue);
+        color: var(--pervye-white) !important;
+        font-weight: 800;
+        font-size: 14px;
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+        padding: 18px 44px;
+        border-radius: 3px !important;
+        text-decoration: none;
+        display: inline-block;
+        transition: all 0.25s ease;
+        box-shadow: 0 8px 25px rgba(51, 102, 204, 0.25);
+        border: none;
+        cursor: pointer;
+    }
+    .btn-hero-action:hover {
+        background-color: #2552B3;
+        transform: translateY(-2px);
+        box-shadow: 0 12px 30px rgba(51, 102, 204, 0.35);
+    }
+    .hero-image-container {
+        max-width: 600px;
+        width: 100%;
+        margin: 40px auto 0 auto;
+        display: flex;
+        justify-content: center;
+        filter: drop-shadow(0 20px 40px rgba(15, 23, 42, 0.04));
+    }
+    .hero-3d-graphic {
+        width: 100%;
+        height: auto;
+        display: block;
+        animation: floating 3s ease-in-out infinite;
+    }
+    @keyframes floating {
+        0% { transform: translateY(0px); }
+        50% { transform: translateY(-10px); }
+        100% { transform: translateY(0px); }
+    }
+
+    /* ФИЛЬТРЫ КАТАЛОГА */
+    .filter-panel-pervye {
+        background: #FFFFFF;
+        border: 2px solid #E2E8F0;
+        border-radius: 3px !important;
+        padding: 25px;
+        margin-bottom: 40px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
+        width: 100%;
+    }
+    .input-pervye-search {
+        flex-grow: 1;
+        border: 2px solid #CBD5E1;
+        border-radius: 3px !important;
+        padding: 10px 16px;
+        font-size: 14px;
+        font-weight: 500;
+        outline: none;
+    }
+    .input-pervye-search:focus { border-color: var(--pervye-blue); }
+    .btn-pervye-blue {
+        background: var(--pervye-blue);
+        color: white !important;
+        border: none;
+        padding: 0 25px;
+        border-radius: 3px !important;
+        font-size: 13px;
+        font-weight: 800;
+        text-transform: uppercase;
+        cursor: pointer;
+    }
+    .select-pervye-custom {
+        border: 2px solid #CBD5E1;
+        border-radius: 3px !important;
+        padding: 10px;
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--pervye-black);
+        outline: none;
+        background-color: #FFFFFF;
+    }
+
+    /* СЕТКА КАРТОЧЕК */
+    .pervye-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        gap: 30px;
+        margin-bottom: 60px;
+        width: 100%;
+    }
+    .pervye-course-card {
+        background: var(--pervye-white);
+        border: 2px solid #E2E8F0;
+        border-radius: 3px !important;
+        padding: 28px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.01);
+        transition: transform 0.2s, border-color 0.2s;
+    }
+    .pervye-course-card:hover {
+        transform: translateY(-4px);
+        border-color: var(--pervye-blue);
+    }
+    .pervye-course-card::before {
+        content: '';
+        position: absolute;
+        top: 0; left: 0; right: 0;
+        height: 4px;
+        background: var(--pervye-blue);
+    }
+    .pervye-card-title {
+        font-size: 20px;
+        color: var(--pervye-black);
+        margin-top: 14px;
+        margin-bottom: 12px;
+        text-transform: uppercase;
+    }
+    .pervye-card-desc {
+        font-size: 13.5px;
+        line-height: 1.6;
+        color: var(--text-slate);
+        font-weight: 500;
+        margin-bottom: 25px;
+        flex-grow: 1;
+    }
+    .btn-pervye-action {
+        background: var(--pervye-blue);
+        color: white !important;
+        border: none;
+        padding: 12px 20px;
+        border-radius: 3px !important;
+        font-size: 12px;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        text-align: center;
+        text-decoration: none;
+        display: block;
+        width: 100%;
+    }
+    .pervye-badge {
+        font-size: 10.5px;
+        font-weight: 700;
+        padding: 5px 10px;
+        border-radius: 3px !important;
+        text-transform: uppercase;
+        letter-spacing: 0.3px;
+        display: inline-block;
+    }
+</style>
+</head>
+<body>
+
+    <!-- НАВИГАЦИОННАЯ ПАНЕЛЬ -->
+    <nav class="navbar-pervye">
+        <div class="container navbar-container-custom">
+            <a href="/" class="brand-logo-container">
+                <span class="brand-word-blue">Движение</span>
+                <span class="brand-word-red">Первых</span>
+            </a>
+            <div class="nav-links-container">
+                <a href="#search-anchor" class="nav-link-pervye">Каталог</a>
+                <a href="/profile/" class="nav-link-pervye">Портфолио</a>
+                {% if user.is_authenticated %}
+                    <a href="/logout/" class="nav-link-pervye" style="color: var(--text-slate);">Выйти</a>
+                {% else %}
+                    <a href="/login/" class="nav-link-pervye" style="color: var(--pervye-blue);">Войти</a>
+            {% endif %}
+                        
+                {% if user.is_authenticated %}
+                    <!-- КНОПКА ЛИЧНОГО КАБИНЕТА ДЛЯ АВТОРИЗОВАННОГО ПОЛЬЗОВАТЕЛЯ -->
+                    <a href="/profile/" class="nav-link-pervye" style="color: var(--pervye-blue); font-weight: 800;">
+                        👤 {{ user.username }} (Кабинет)
+                    </a>
+                    
+                {% endif %}
+            </div>
+
+        </div>
+    </nav>
+
+    <!-- ПРИВЕТСТВЕННЫЙ ЭКРАН САЙТА -->
+    <section class="premium-hero-screen">
+        <div class="container">
+            <h1 class="hero-main-title">
+                Образовательная платформа, которую <span>рекомендуют</span> ваши друзья
+            </h1>
+            <p class="hero-sub-title">
+                Прокачивай навыки, вдохновляйся идеями и собирай уникальное цифровое портфолио Первых!
+            </p>
+            <a href="#search-anchor" class="btn-hero-action">Вперед к знаниям!</a>
+            <div class="hero-image-container">
+                <img src="{% static 'core/3d-floating-no-bg-preview (carve.photos).png' %}" alt="Обучение" class="hero-3d-graphic">
+            </div>
+        </div>
+    </section>
+
+    <div id="search-anchor"></div>
+
+    <!-- СЕКЦИЯ КАТАЛОГА -->
+    <main style="padding-top: 50px; padding-bottom: 60px; background-color: var(--bg-slate); border-top: 1px solid #E2E8F0; width: 100%;">
+        <div class="container">
+            
+            <!-- БЛОК ПОИСКА И ФИЛЬТРОВ -->
+            <div class="filter-panel-pervye">
+                <h2 style="font-weight: 900; font-size: 20px; text-transform: uppercase; color: var(--pervye-black); margin-bottom: 20px;">
+                    🔍 Поиск образовательных программ
+                </h2>
+
+                <form method="GET" action="" style="display: flex; flex-direction: column; gap: 15px;">
+                    <div style="display: flex; gap: 12px; width: 100%;">
+                        <input type="text" name="q" value="{{ query }}" placeholder="Введите ключевое слово для поиска курса..." class="input-pervye-search">
+                        <button type="submit" class="btn-pervye-blue">Найти</button>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; width: 100%;">
+                        <select name="theme" class="select-pervye-custom">
+                            <option value="">Все направления</option>
+                            <option value="media" {% if selected_theme == 'media' %}selected{% endif %}>Медиа и коммуникации</option>
+                            <option value="leadership" {% if selected_theme == 'leadership' %}selected{% endif %}>Лидерство и команда</option>
+                            <option value="science" {% if selected_theme == 'science' %}selected{% endif %}>Наука и технологии</option>
+                        </select>
+
+                        <select name="age" class="select-pervye-custom">
+                            <option value="">Все возрасты</option>
+                            <option value="6-11" {% if selected_age == '6-11' %}selected{% endif %}>6–11 лет (Младшие классы)</option>
+                            <option value="12-15" {% if selected_age == '12-15' %}selected{% endif %}>12–15 лет (Средние классы)</option>
+                            <option value="16-18" {% if selected_age == '16-18' %}selected{% endif %}>Старшие классы и студенты</option>
+                        </select>
+
+                        <select name="format" class="select-pervye-custom">
+                            <option value="">Все форматы</option>
+                            <option value="online" {% if selected_format == 'online' %}selected{% endif %}>🌐 Онлайн-курс</option>
+                            <option value="hybrid" {% if selected_format == 'hybrid' %}selected{% endif %}>⚡ Интенсив / Смешанный</option>
+                        </select>
+                    </div>
+
+                    <div style="display: flex; gap: 15px; align-items: center; margin-top: 5px;">
+                        <button type="submit" style="background: var(--pervye-red); color: white; border: none; padding: 10px 24px; border-radius: 3px; font-size: 12px; font-weight: 800; text-transform: uppercase; cursor: pointer; letter-spacing: 0.5px;">
+                            Применить
+                        </button>
+                        {% if query or selected_theme or selected_age or selected_format %}
+                            <a href="/" style="color: var(--text-slate); font-size: 13px; font-weight: 600; text-decoration: none;">❌ Сбросить</a>
+                        {% endif %}
+                    </div>
+                </form>
+            </div>
+
+            <!-- СЕТКА КАРТОЧЕК -->
+            <div class="pervye-grid">
+                {% for course in courses %}
+                <div class="pervye-course-card">
+                    <div>
+                        <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px;">
+                            <span class="pervye-badge" style="background: rgba(51, 102, 204, 0.08); color: var(--pervye-blue);">
+                                {% if course.theme == 'media' %}Медиа
+                                {% elif course.theme == 'leadership' %}Лидерство
+                                {% elif course.theme == 'science' %}Наука
+                                {% else %}{{ course.theme }}{% endif %}
+                            </span>
+                            <span class="pervye-badge" style="background: rgba(217, 9, 18, 0.06); color: var(--pervye-red);">
+                                {% if course.age_category == '6-11' %}6-11 лет
+                                {% elif course.age_category == '12-15' %}12-15 лет
+                                {% elif course.age_category == '16-18' %}🎓 16-18 лет
+                                {% else %}{{ course.age_category }}{% endif %}
+                            </span>
+                            {% if course.course_format == 'online' %}
+                                <span class="pervye-badge" style="background: #F1F5F9; color: #475569;">🌐 Онлайн</span>
+                            {% elif course.course_format == 'hybrid' %}
+                                <span class="pervye-badge" style="background: #FAF5FF; color: #7C3AED;">⚡ Интенсив</span>
+                            {% endif %}
+                        </div>
+
+                        <h3 class="pervye-card-title">{{ course.title }}</h3>
+                        <p class="pervye-card-desc">{{ course.description }}</p>
+                    </div>
+
+                    <a href="/course/{{ course.id }}/" class="btn-pervye-action">
+                        Начать обучение
+                    </a>
+                </div>
+                {% empty %}
+                <div style="grid-column: 1/-1; text-align: center; padding: 40px 20px; background: white; border-radius: 3px; border: 2px solid #CBD5E1;">
+                    <h4 style="color: var(--pervye-black); font-size: 15px; font-weight: 700; text-transform: uppercase;">По вашему запросу программ не найдено</h4>
+                    <a href="/" style="display: inline-block; margin-top: 10px; color: var(--pervye-blue); text-decoration: none; font-weight: 700; font-size: 13px;">← Назад в каталог</a>
+                </div>
+                {% endfor %}
+            </div>
+
+        </div>
+    </main>
+
+    <!-- ПОДВАЛ ПО БРЕНДБУКУ -->
+    <footer class="footer py-4 bg-white border-top" style="border-color: #E2E8F0 !important; width: 100%;">
+        <div class="container text-center">
+            <span style="color: var(--text-slate); font-size: 13px; font-weight: 600;">© 2026 Движение Первых. Официальная образовательная экосистема платформы.</span>
+        </div>
+    </footer>
+
+</body>
+</html>
+
+

@@ -1,0 +1,143 @@
+{% extends 'base.html' %}
+
+{% block extra_css %}
+<style>
+    /* Стили для адаптивного и красивого плеера VK Видео */
+    .video-wrapper {
+        position: relative;
+        padding-bottom: 56.25%; /* Пропорции экрана 16:9 */
+        height: 0;
+        overflow: hidden;
+        border: 2px solid #CBD5E1;
+        border-radius: 3px !important; /* Строго 3px по регламенту брендбука */
+        box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+        background: #000;
+        margin-bottom: 30px;
+    }
+    .video-wrapper iframe {
+        position: absolute;
+        top: 0; left: 0; width: 100%; height: 100%;
+        border: none;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Навигация назад -->
+<div style="margin-bottom: 24px;">
+    <a href="/" style="color: var(--pervye-blue); text-decoration: none; font-weight: 700; font-size: 14px;">
+        ← Вернуться в каталог программ
+    </a>
+</div>
+
+<!-- Заголовок урока по брендбуку -->
+<h1 style="font-family: 'Montserrat', 'Arial Black', sans-serif; font-size: 26px; color: var(--pervye-black); margin-bottom: 8px; text-transform: uppercase; font-weight: 900;">
+    {{ lesson.title }}
+</h1>
+<p style="color: var(--text-slate); font-size: 14px; font-weight: 600; margin-bottom: 35px; text-transform: uppercase; letter-spacing: 0.5px;">
+    Модуль: {{ lesson.module.title }}
+</p>
+
+<!-- Адаптивный плеер VK Видео -->
+<div class="video-wrapper">
+    <iframe src="{{ lesson.video_url|default:'https://vk.com' }}" 
+            allow="autoplay; encrypted-media; fullscreen; picture-in-picture;" 
+            webkitallowfullscreen 
+            mozallowfullscreen 
+            allowfullscreen>
+    </iframe>
+</div>
+
+<!-- Конспект лекции -->
+<div class="p-card" style="padding: 30px; margin-bottom: 40px; border-radius: 3px !important; background: var(--pervye-white); border: 2px solid #CBD5E1;">
+    <h3 style="font-family: 'Montserrat', 'Arial Black', sans-serif; font-size: 15px; color: var(--pervye-blue); margin-bottom: 12px; text-transform: uppercase; font-weight: 900;">
+        📖 Конспект лекционного материала
+    </h3>
+    <div style="font-size: 14.5px; line-height: 1.7; color: var(--pervye-black); font-family: 'Montserrat', sans-serif; font-weight: 500;">
+        {% if lesson.longrid %}
+            {{ lesson.longrid|linebreaks }}
+        {% elif lesson.text %}
+            {{ lesson.text|linebreaks }}
+        {% elif lesson.content %}
+            {{ lesson.content|linebreaks }}
+        {% else %}
+            <p style="color: #64748B;">Текст конспекта успешно сохранен в админке, но переменная в шаблоне проверяет другое имя. Проверьте название поля лонгрида в файле core/models.py.</p>
+        {% endif %}
+    </div>
+</div>
+
+<!-- ДИНАМИЧЕСКИЙ ИНТЕРАКТИВНЫЙ ТЕСТ С УНИКАЛЬНЫМИ ВОПРОСАМИ ИЗ АДМИНКИ -->
+{% if lesson.test_question %}
+<div class="p-card" style="padding: 35px; border-radius: 3px !important; background: var(--pervye-white); border: 2px solid #CBD5E1; margin-bottom: 50px;">
+    <h3 style="font-family: 'Montserrat', 'Arial Black', sans-serif; font-size: 16px; color: var(--pervye-blue); margin-bottom: 20px; text-transform: uppercase; font-weight: 900;">
+        📝 Проверить знания (Интерактивный тест)
+    </h3>
+
+    <!-- БЛОК РЕЗУЛЬТАТОВ ПОСЛЕ ПРОВЕРКИ -->
+       <!-- БЛОК РЕЗУЛЬТАТОВ И КНОПКА ЗАВЕРШЕНИЯ БЛOКА -->
+    {% if test_checked %}
+        {% if is_correct %}
+            <div style="padding: 20px; border-radius: 3px; margin-bottom: 25px; background: rgba(51, 102, 204, 0.08); color: var(--pervye-blue); border-left: 4px solid var(--pervye-blue);">
+                <p style="font-weight: 700; font-size: 14.5px; margin-bottom: 12px;">🎉 Отлично! Ответ верный. Тестирование успешно пройдено!</p>
+                
+                <!-- ОФИЦИАЛЬНАЯ КНОПКА ЗАВЕРШЕНИЯ БЛOКА С УГЛАМИ 3PX -->
+                <form method="POST" action="" style="margin: 0; padding: 0;">
+                    {% csrf_token %}
+                    <input type="hidden" name="complete_module" value="true">
+                    <button type="submit" style="background: #10B981 !important; color: white !important; border: none !important; padding: 12px 24px !important; border-radius: 3px !important; font-family: 'Montserrat', sans-serif !important; font-size: 11px !important; font-weight: 800 !important; text-transform: uppercase !important; cursor: pointer !important; letter-spacing: 0.5px; transition: opacity 0.2s;">
+                        ✅ Завершить этот блок и обновить прогресс
+                    </button>
+                </form>
+            </div>
+        {% else %}
+            <div style="padding: 15px; border-radius: 3px; margin-bottom: 25px; font-weight: 700; font-size: 14px; background: rgba(217, 9, 18, 0.08); color: var(--pervye-red); border-left: 4px solid var(--pervye-red);">
+                ❌ Неверно. Перечитай конспект лекции выше и попробуй выбрать другой вариант ответа!
+            </div>
+        {% endif %}
+    {% endif %}
+
+
+    <form method="POST" action="">
+        {% csrf_token %}
+        <input type="hidden" name="submit_test" value="true">
+
+        <div style="margin-bottom: 30px;">
+            <p style="font-weight: 700; font-size: 14.5px; margin-bottom: 15px; color: var(--pervye-black);">
+                ❓ {{ lesson.test_question }}
+                {% if test_checked %}
+                    {% if is_correct %}
+                        <span style="color:var(--pervye-blue); margin-left:10px;">✔️ Верно</span>
+                    {% else %}
+                        <span style="color:var(--pervye-red); margin-left:10px;">❌ Ошибка</span>
+                    {% endif %}
+                {% endif %}
+            </p>
+            
+            {% if lesson.option_a %}
+            <label style="display:block; font-size: 13.5px; margin-bottom: 10px; cursor:pointer;"><input type="radio" name="user_answer" value="A" required style="margin-right:8px;"> а) {{ lesson.option_a }}</label>
+            {% endif %}
+            
+            {% if lesson.option_b %}
+            <label style="display:block; font-size: 13.5px; margin-bottom: 10px; cursor:pointer;"><input type="radio" name="user_answer" value="B" style="margin-right:8px;"> б) {{ lesson.option_b }}</label>
+            {% endif %}
+            
+            {% if lesson.option_c %}
+            <label style="display:block; font-size: 13.5px; margin-bottom: 10px; cursor:pointer;"><input type="radio" name="user_answer" value="C" style="margin-right:8px;"> в) {{ lesson.option_c }}</label>
+            {% endif %}
+            
+            {% if lesson.option_d %}
+            <label style="display:block; font-size: 13.5px; margin-bottom: 10px; cursor:pointer;"><input type="radio" name="user_answer" value="D" style="margin-right:8px;"> г) {{ lesson.option_d }}</label>
+            {% endif %}
+        </div>
+
+        <div style="display: block; width: 100%; margin-top: 20px;">
+            <button type="submit" style="display: inline-block !important; background: var(--pervye-blue) !important; color: white !important; border: none !important; padding: 14px 35px !important; border-radius: 3px !important; font-family: 'Montserrat', sans-serif !important; font-size: 12px !important; font-weight: 800 !important; text-transform: uppercase !important; cursor: pointer !important;">
+                Проверить ответ
+            </button>
+        </div>
+    </form>
+</div>
+{% endif %}
+{% endblock %}
+
+

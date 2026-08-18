@@ -1,0 +1,148 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_css %}
+<style>
+    /* Хлебные крошки */
+    .back-link {
+        color: var(--pervye-blue);
+        text-decoration: none;
+        font-weight: 700;
+        font-size: 14px;
+        display: inline-block;
+        margin-bottom: 24px;
+    }
+
+    /* Шапка курса по брендбуку на белом фоне с синей рамкой */
+    .course-hero-box {
+        background: var(--pervye-white) !important;
+        border: 2px solid #CBD5E1 !important;
+        border-radius: 3px !important; /* Строго 3px по ТЗ */
+        padding: 40px;
+        margin-bottom: 40px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.02);
+    }
+    .course-hero-box h1 {
+        font-size: 28px;
+        color: var(--pervye-black);
+        margin-bottom: 16px;
+    }
+
+    /* Стилизация модулей */
+    .module-wrapper {
+        margin-bottom: 30px;
+    }
+    .module-title-banner {
+        background: #F8FAFC;
+        border: 2px solid #E2E8F0;
+        border-bottom: none;
+        border-radius: 3px 3px 0 0 !important; /* Углы 3px сверху */
+        padding: 18px 24px;
+    }
+    .module-title-banner h3 {
+        font-size: 15px;
+        color: var(--pervye-blue);
+        margin: 0;
+    }
+
+    /* Контейнер списка уроков внутри модуля */
+    .lessons-list-box {
+        background: var(--pervye-white);
+        border: 2px solid #E2E8F0;
+        border-radius: 0 0 3px 3px !important; /* Углы 3px снизу */
+        padding: 10px 0;
+    }
+
+    /* Строка интерактивного урока */
+    .lesson-row-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 14px 24px;
+        border-bottom: 1px solid #F1F5F9;
+        text-decoration: none;
+        color: var(--pervye-black);
+        transition: background 0.2s;
+    }
+    .lesson-row-item:last-child {
+        border-bottom: none;
+    }
+    .lesson-row-item:hover {
+        background: rgba(51, 102, 204, 0.03);
+    }
+
+    .lesson-info-side {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-weight: 600;
+        font-size: 14.5px;
+    }
+
+    /* Фирменная маленькая красная кнопка перехода */
+    .btn-go-lesson {
+        background: var(--pervye-red);
+        color: white !important;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 3px !important; /* Строго 3px */
+        font-family: 'Montserrat', sans-serif;
+        font-size: 11px;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Навигация назад в каталог -->
+<a href="/" class="back-link">← Вернуться в каталог программ</a>
+
+<!-- Карточка с описанием курса -->
+<div class="course-hero-box">
+    <h1>{{ course.title }}</h1>
+    <p style="color: var(--text-slate); font-size: 15px; line-height: 1.6; font-weight: 500; margin: 0;">
+        {{ course.description }}
+    </p>
+</div>
+
+<h2 style="font-family: 'Montserrat', 'Arial Black', sans-serif; font-weight: 900; font-size: 20px; text-transform: uppercase; margin-bottom: 25px; color: var(--pervye-black);">
+    🗺️ Структура образовательной программы
+</h2>
+
+<!-- Вывод модулей и уроков -->
+<div style="width: 100%;">
+    {% for module in course.modules.all %}
+    <div class="module-wrapper">
+        <!-- Баннер названия модуля -->
+        <div class="module-title-banner">
+            <h3>📦 {{ module.title }}</h3>
+        </div>
+        
+        <!-- Список уроков, привязанных к модулю -->
+        <div class="lessons-list-box">
+            {% for lesson in module.lessons.all %}
+            <a href="/lesson/{{ lesson.id }}/" class="lesson-row-item">
+                <div class="lesson-info-side">
+                    <span>📖</span>
+                    <span>{{ lesson.title }}</span>
+                </div>
+                <div class="btn-go-lesson">Изучить</div>
+            </a>
+            {% empty %}
+            <div style="padding: 15px 24px; color: #94A3B8; font-size: 13.5px; font-weight: 500;">
+                В этом модуле ещё нет лекционных материалов.
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% empty %}
+    <div style="text-align: center; padding: 40px; border: 2px dashed #CBD5E1; border-radius: 3px; background: white;">
+        <h4 style="color: #64748B; font-size: 15px; margin: 0;">Разделы программы сейчас наполняются администратором.</h4>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
+
+

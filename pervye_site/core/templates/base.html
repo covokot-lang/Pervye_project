@@ -1,0 +1,235 @@
+
+{% load static %}
+
+{% block extra_css %}
+<style>
+    /* Фирменная панель фильтров по брендбуку (скругление 3px) */
+    .filter-panel-pervye {
+        background: #FFFFFF;
+        border: 2px solid #E2E8F0;
+        border-radius: 3px !important;
+        padding: 25px;
+        margin-top: 20px;
+        margin-bottom: 40px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
+    }
+    .input-pervye-search {
+        flex-grow: 1;
+        border: 2px solid #CBD5E1;
+        border-radius: 3px !important;
+        padding: 10px 16px;
+        font-size: 14px;
+        font-weight: 500;
+        outline: none;
+    }
+    .input-pervye-search:focus {
+        border-color: var(--pervye-blue);
+    }
+    .btn-pervye-blue {
+        background: var(--pervye-blue);
+        color: white !important;
+        border: none;
+        padding: 0 25px;
+        border-radius: 3px !important;
+        font-size: 13px;
+        font-weight: 800;
+        text-transform: uppercase;
+        cursor: pointer;
+    }
+    .select-pervye-custom {
+        border: 2px solid #CBD5E1;
+        border-radius: 3px !important;
+        padding: 10px;
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--pervye-black);
+        outline: none;
+        background-color: #FFFFFF;
+    }
+
+    /* Строгая и стабильная сетка карточек */
+    .pervye-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        gap: 30px;
+        margin-bottom: 60px;
+        width: 100%;
+    }
+
+    /* Карточка курса по брендбуку (скругление строго 3px) */
+    .pervye-course-card {
+        background: var(--pervye-white);
+        border: 2px solid #E2E8F0;
+        border-radius: 3px !important;
+        padding: 28px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.01);
+        transition: transform 0.2s, border-color 0.2s;
+    }
+    .pervye-course-card:hover {
+        transform: translateY(-4px);
+        border-color: var(--pervye-blue);
+    }
+    .pervye-course-card::before {
+        content: '';
+        position: absolute;
+        top: 0; left: 0; right: 0;
+        height: 4px;
+        background: var(--pervye-blue);
+    }
+
+    .pervye-card-title {
+        font-weight: 800;
+        font-size: 18px;
+        color: var(--pervye-black);
+        margin-top: 14px;
+        margin-bottom: 12px;
+        text-transform: uppercase;
+        line-height: 1.3;
+    }
+    .pervye-card-desc {
+        font-size: 13.5px;
+        line-height: 1.6;
+        color: var(--text-slate);
+        font-weight: 500;
+        margin-bottom: 25px;
+        flex-grow: 1;
+    }
+
+    /* Официальная кнопка Движения Первых */
+    .btn-pervye-action {
+        background: var(--pervye-blue);
+        color: white !important;
+        border: none;
+        padding: 12px 20px;
+        border-radius: 3px !important;
+        font-size: 12px;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        text-align: center;
+        text-decoration: none;
+        display: block;
+        width: 100%;
+        transition: opacity 0.15s;
+    }
+    .btn-pervye-action:hover {
+        opacity: 0.9;
+    }
+
+    .pervye-badge {
+        font-size: 10.5px;
+        font-weight: 700;
+        padding: 5px 10px;
+        border-radius: 3px !important;
+        text-transform: uppercase;
+        letter-spacing: 0.3px;
+        display: inline-block;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- БЛОК ПОИСКА И ФИЛЬТРОВ -->
+<div class="filter-panel-pervye">
+    <h2 style="font-weight: 900; font-size: 20px; text-transform: uppercase; color: var(--pervye-black); margin-bottom: 20px;">
+        🔍 Поиск образовательных программ
+    </h2>
+
+    <form method="GET" action="" style="display: flex; flex-direction: column; gap: 15px;">
+        <div style="display: flex; gap: 12px; width: 100%;">
+            <input type="text" name="q" value="{{ query }}" placeholder="Введите ключевое слово для поиска курса..." class="input-pervye-search">
+            <button type="submit" class="btn-pervye-blue">Найти</button>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; width: 100%;">
+            <select name="theme" class="select-pervye-custom">
+                <option value="">Все направления</option>
+                <option value="media" {% if selected_theme == 'media' %}selected{% endif %}>Медиа и коммуникации</option>
+                <option value="leadership" {% if selected_theme == 'leadership' %}selected{% endif %}>Лидерство и команда</option>
+                <option value="science" {% if selected_theme == 'science' %}selected{% endif %}>Наука и технологии</option>
+            </select>
+
+            <select name="age" class="select-pervye-custom">
+                <option value="">Все возрасты</option>
+                <option value="6-11" {% if selected_age == '6-11' %}selected{% endif %}>6–11 лет (Младшие классы)</option>
+                <option value="12-15" {% if selected_age == '12-15' %}selected{% endif %}>12–15 лет (Средние классы)</option>
+                <option value="16-18" {% if selected_age == '16-18' %}selected{% endif %}>Старшие классы и студенты</option>
+            </select>
+
+            <select name="format" class="select-pervye-custom">
+                <option value="">Все форматы</option>
+                <option value="online" {% if selected_format == 'online' %}selected{% endif %}>🌐 Онлайн-курс</option>
+                <option value="hybrid" {% if selected_format == 'hybrid' %}selected{% endif %}>⚡ Интенсив / Смешанный</option>
+            </select>
+        </div>
+
+        <div style="display: flex; gap: 15px; align-items: center; margin-top: 5px;">
+            <button type="submit" style="background: var(--pervye-red); color: white; border: none; padding: 10px 24px; border-radius: 3px; font-size: 12px; font-weight: 800; text-transform: uppercase; cursor: pointer; letter-spacing: 0.5px;">
+                Применить
+            </button>
+            {% if query or selected_theme or selected_age or selected_format %}
+                <a href="/" style="color: var(--text-slate); font-size: 13px; font-weight: 600; text-decoration: none;">❌ Сбросить</a>
+            {% endif %}
+        </div>
+    </form>
+</div>
+
+<!-- СЕТКА КАРТОЧЕК -->
+<div class="pervye-grid">
+    {% for course in courses %}
+    <div class="pervye-course-card">
+        <div>
+            <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px;">
+                <span class="pervye-badge" style="background: rgba(51, 102, 204, 0.08); color: var(--pervye-blue);">
+                    {% if course.theme == 'media' %}Медиа
+                    {% elif course.theme == 'leadership' %}Лидерство
+                    {% elif course.theme == 'science' %}Наука
+                    {% else %}{{ course.theme }}{% endif %}
+                </span>
+                <span class="pervye-badge" style="background: rgba(217, 9, 18, 0.06); color: var(--pervye-red);">
+                    {% if course.age_category == '6-11' %}6-11 лет
+                    {% elif course.age_category == '12-15' %}12-15 лет
+                    {% elif course.age_category == '16-18' %}🎓 16-18 лет
+                    {% else %}{{ course.age_category }}{% endif %}
+                </span>
+                {% if course.course_format == 'online' %}
+                    <span class="pervye-badge" style="background: #F1F5F9; color: #475569;">🌐 Онлайн</span>
+                {% elif course.course_format == 'hybrid' %}
+                    <span class="pervye-badge" style="background: #FAF5FF; color: #7C3AED;">⚡ Интенсив</span>
+                {% endif %}
+            </div>
+
+            <h3 class="pervye-card-title">{{ course.title }}</h3>
+            <p class="pervye-card-desc">{{ course.description }}</p>
+        </div>
+
+        <a href="/course/{{ course.id }}/" class="btn-pervye-action">
+            Начать обучение
+        </a>
+    </div>
+    {% empty %}
+    <div style="grid-column: 1/-1; text-align: center; padding: 40px 20px; background: white; border-radius: 3px; border: 2px solid #CBD5E1;">
+        <h4 style="color: var(--pervye-black); font-size: 15px; font-weight: 700; text-transform: uppercase;">По вашему запросу программ не найдено</h4>
+        <a href="/" style="display: inline-block; margin-top: 10px; color: var(--pervye-blue); text-decoration: none; font-weight: 700; font-size: 13px;">← Назад в каталог</a>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+

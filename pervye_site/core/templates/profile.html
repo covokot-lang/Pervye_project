@@ -1,0 +1,296 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Личный кабинет — Движение Первых</title>
+
+    <!-- Подключаем Bootstrap 5 -->
+    <link href="https://jsdelivr.net" rel="stylesheet">
+    <link rel="preconnect" href="https://googleapis.com">
+    <link rel="preconnect" href="https://gstatic.com" crossorigin>
+    <link href="https://googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --pervye-red: #D90912;
+            --pervye-blue: #3366CC;
+            --pervye-black: #1E293B;
+            --pervye-white: #FFFFFF;
+            --bg-slate: #F8FAFC;
+            --text-slate: #64748B;
+        }
+        
+        * {
+            box-sizing: border-box;
+            font-family: 'Inter', system-ui, sans-serif !important;
+        }
+        body {
+            background-color: var(--bg-slate);
+            color: var(--pervye-black);
+            margin: 0; padding: 0;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Заголовки по бренду */
+        .brand-word-blue, .brand-word-red, h2, h3, h4, .pervye-icon-num {
+            font-family: 'Arial Black', 'Impact', sans-serif !important;
+            font-stretch: expanded !important;
+            font-weight: 900 !important;
+            letter-spacing: -0.04em !important;
+            text-transform: uppercase;
+            line-height: 1.1;
+        }
+
+        /* НАВИГАЦИОННАЯ ШАПКА */
+        .navbar-pervye {
+            background-color: var(--pervye-white);
+            border-bottom: 2px solid #E2E8F0;
+            padding: 16px 0;
+            position: sticky;
+            top: 0; z-index: 1000; width: 100%;
+        }
+        .navbar-container-custom {
+            display: flex !important; justify-content: space-between !important; align-items: center !important; width: 100%;
+        }
+        .brand-logo-container { display: flex; align-items: center; gap: 6px; text-decoration: none !important; }
+        .brand-word-blue { font-size: 24px; color: var(--pervye-blue); }
+        .brand-word-red { font-size: 24px; color: var(--pervye-red); }
+        .nav-links-container { display: flex; gap: 28px; align-items: center; }
+        .nav-link-pervye { color: var(--pervye-black); font-weight: 700 !important; font-size: 13.5px; text-decoration: none; text-transform: uppercase; }
+        .nav-link-pervye:hover { color: var(--pervye-blue); }
+
+        /* СТИЛЬНЫЕ КОМПАКТНЫЕ ОКОШЕЧКИ */
+        .pervye-card {
+            background: #FFFFFF;
+            border: 2px solid #E2E8F0;
+            border-radius: 3px !important;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 12px rgba(30, 41, 59, 0.02);
+            position: relative;
+            overflow: hidden;
+        }
+        .pervye-card::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: var(--pervye-blue);
+        }
+        .pervye-card.moderation::before { background: var(--pervye-red); }
+
+        /* МАРКЕР ПЕРВЫХ (ЦИФРА 1) С НАКЛОНОМ */
+        .pervye-icon-num {
+            display: inline-flex;
+            align-items: center; justify-content: center;
+            background-color: var(--pervye-blue);
+            color: white !important;
+            font-size: 13px;
+            width: 20px; height: 20px;
+            border-radius: 2px;
+            margin-right: 8px;
+            transform: skewX(-10deg);
+        }
+
+        /* ПРОГРЕСС-БАРЫ */
+        .progress-pervye {
+            height: 8px; background-color: #E2E8F0; border-radius: 3px !important; overflow: hidden; margin-top: 6px; margin-bottom: 12px;
+        }
+        .progress-bar-fill {
+            height: 100%; background-color: var(--pervye-blue); border-radius: 3px !important; transition: width 0.3s ease;
+        }
+
+        .pervye-badge {
+            font-size: 10px; font-weight: 700; padding: 4px 8px; border-radius: 3px !important; display: inline-block; text-transform: uppercase;
+        }
+        
+        .btn-pervye-action {
+            background: var(--pervye-blue); color: white !important; border: none; padding: 12px 20px; border-radius: 3px !important; font-size: 12px; text-align: center; text-decoration: none; width: 100%; display: block; cursor: pointer; transition: opacity 0.15s ease;
+        }
+        .btn-pervye-action:hover { opacity: 0.9; }
+        
+        .form-control {
+            border-radius: 3px !important; border: 2px solid #CBD5E1; padding: 10px 14px; font-size: 13.5px; width: 100% !important;
+        }
+        .form-control:focus { border-color: var(--pervye-blue); box-shadow: none; }
+    </style>
+</head>
+<body>
+
+    <!-- ВЕРХНЯЯ НАВИГАЦИЯ -->
+    <nav class="navbar-pervye">
+        <div class="container navbar-container-custom">
+            <a href="/" class="brand-logo-container">
+                <span class="brand-word-blue">Движение</span>
+                <span class="brand-word-red">Первых</span>
+            </a>
+            <div class="nav-links-container">
+                <a href="/" class="nav-link-pervye">Каталог</a>
+                <a href="/profile/" class="nav-link-pervye">Портфолио</a>
+                <a href="/profile/" class="nav-link-pervye" style="color: var(--pervye-blue); font-weight: 800;">👤 {{ user.username }}</a>
+                <a href="/logout/" class="nav-link-pervye" style="color: var(--text-slate); font-size: 12px;">Выйти</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- СЕТКА ИНТЕРФЕЙСА: СТРОГО ДВЕ КОЛОНКИ -->
+    <div class="container" style="padding-top: 40px; padding-bottom: 60px;">
+        <div class="row g-4">
+            
+            <!-- ЛЕВАЯ КОЛОНКА (ОРИГИНАЛЬНЫЙ ЛОГОТИП И ИМЯ) -->
+            <div class="col-lg-4 col-md-5">
+                <div class="pervye-card text-center" style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 35px 20px;">
+                    
+                    <!-- Оригинальный логотип Движения Первых из вашей папки статики -->
+                    <div style="margin-bottom: 18px; display: flex; flex-direction: column; align-items: center;">
+                        <img src="/static/core/logo.png" alt="Движение Первых" style="width: 140px !important; height: auto !important; display: block; margin: 0 auto;">
+                    </div>
+                    
+                    <!-- Никнейм -->
+                    <h3 style="font-size: 22px; margin-bottom: 6px; color: var(--pervye-black); word-break: break-word;">{{ user.username }}</h3>
+                    <span class="pervye-badge" style="background: rgba(51, 102, 204, 0.08); color: var(--pervye-blue); letter-spacing: 0.5px;">
+                        Роль: {% if user.is_staff %}Администратор{% else %}Участник{% endif %}
+                    </span>
+                    
+                </div>
+            </div>
+
+            <!-- ПРАВАЯ КОЛОНКА -->
+            <div class="col-lg-8 col-md-7">
+                
+                <!-- ПАНЕЛЬ МОДЕРАЦИИ ДЛЯ АДМИНА -->
+                {% if user.is_staff %}
+                <div class="pervye-card moderation">
+                    <h4 style="font-size: 14px; margin-bottom: 12px; color: var(--pervye-red); display: flex; align-items: center;">
+                        <span class="pervye-icon-num" style="background-color: var(--pervye-red);">1</span> Панель модерации (Доступ закрыт для обычных пользователей)
+                    </h4>
+                    <p style="font-size: 13px; color: var(--text-slate); margin-bottom: 12px;">Здесь модераторы Движения Первых проверяют публикации участников перед выводом на сайт.</p>
+                    <div style="background: #FFF5F5; border-left: 4px solid var(--pervye-red); padding: 12px; font-size: 13px; color: #991B1B; font-weight: 500; border-radius: 2px;">
+                        ☕ Отлично! Очередь проверки пуста. Все материалы участников промодерированы.
+                    </div>
+                </div>
+                {% endif %}
+                
+                <!-- ОКОШКО 1: ПРОГРЕСС ПО МОДУЛЯМ -->
+                <div class="pervye-card">
+                    <h4 style="font-size: 14px; margin-bottom: 18px; color: var(--pervye-blue); display: flex; align-items: center;">
+                        <span class="pervye-icon-num">1</span> Прогресс по модулям
+                    </h4>
+                    
+                    {% if current_course %}
+                        <div style="font-weight: 800; font-size: 13.5px; text-transform: uppercase; margin-bottom: 15px; color: var(--pervye-black);">
+                            📖 {{ current_course.title }}
+                        </div>
+                        
+                        {% for module in current_course.modules.all %}
+                        <div class="mb-3" style="border-bottom: 1px solid #F1F5F9; padding-bottom: 8px;">
+                            <div style="font-size: 13px; font-weight: 600; line-height: 1.3;">{{ module.title }}</div>
+                            <div style="display: flex; justify-content: space-between; font-size: 11px; color: var(--text-slate); margin-top: 4px;">
+                                <span>Пройдено: {{ module.completed_percent|default:"0" }}%</span>
+                            </div>
+                            <div class="progress-pervye">
+                                <div class="progress-bar-fill" style="width: {{ module.completed_percent|default:'0' }}%;"></div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="mb-3" style="border-bottom: 1px solid #F1F5F9; padding-bottom: 8px;">
+                            <div style="font-size: 13px; font-weight: 600; line-height: 1.4; color: var(--pervye-black);">Модуль 1: Первые шаги перед камерой (Борьба со страхом и речь)</div>
+                            <div style="font-size: 13px; color: var(--text-slate); margin-top: 4px; margin-bottom: 4px;">Вы еще не начали проходить модули образовательных курсов.</div>
+                            <a href="/" style="color: var(--pervye-blue); font-weight: 700; text-decoration: none; display: inline-block; font-size: 13px;">Перейти в каталог программ →</a>
+                        </div>
+                    {% endif %}
+                </div>
+
+                <!-- ОКОШКО 2: ПУБЛИКАЦИИ И МОДЕРАЦИЯ МАТЕРИАЛОВ -->
+                <div class="pervye-card">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 8px;">
+                        <h4 style="font-size: 14px; margin: 0; color: var(--pervye-black); display: flex; align-items: center;">
+                            <span class="pervye-icon-num" style="background-color: var(--pervye-black);">1</span> Мои публикации на платформе
+                        </h4>
+                        <span class="pervye-badge" style="background: var(--pervye-blue); color: white; font-weight: 700 !important;">Рейтинг: 450 XP</span>
+                    </div>
+
+                    <!-- Форма быстрой отправки материала на модерацию -->
+                    <form method="POST" style="background: #F8FAFC; padding: 16px; border-radius: 3px; border: 2px solid #E2E8F0; margin-bottom: 20px;">
+                        {% csrf_token %}
+                        <input type="hidden" name="action" value="submit_post"> 
+                        
+                        <div style="font-size: 11px; font-weight: 800; text-transform: uppercase; color: var(--pervye-blue); margin-bottom: 8px;">📢 Поделиться достижением / Отправить проект на модерацию</div>
+                        <div class="row g-2">
+                            <div class="col-md-9">
+                                <input type="text" name="title" class="form-control" placeholder="Ссылка на ваш проект или название публикации (например: Мой первый медиа-пост)" required>
+                            </div>
+                            <div class="col-md-3">
+                                <button type="submit" class="btn-pervye-action" style="padding: 11px 0; height: 100%; font-size: 11px;">Отправить</button>
+                            </div>
+                        </div>
+                    </form>
+
+                    <!-- Список или заглушка публикаций -->
+                    {% if user_posts %}
+                        <div class="row g-2">
+                            {% for post in user_posts %}
+                            <div class="col-12">
+                                <div style="background: #FFFFFF; border: 2px solid #E2E8F0; border-radius: 3px; padding: 12px; display: flex; justify-content: space-between; align-items: center;">
+                                    <div style="font-size: 13px; font-weight: 700; color: var(--pervye-black);">📝 {{ post.title }}</div>
+                                    <span class="pervye-badge" style="background: #FEF3C7; color: #D97706;">На модерации</span>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <p style="font-size: 12.5px; color: var(--text-slate); margin-bottom: 16px; text-align: center; padding: 10px 0;">
+                             Вы еще не отправляли текстовые материалы и ссылки на модерацию. Используйте форму выше!
+                        </p>
+                    {% endif %}
+
+                    <!-- ИНТЕРАКТИВНАЯ СЕТКА КАРТОЧЕК НАГРАД (ГЕЙМИФИКАЦИЯ) -->
+                    <div style="font-size: 11px; font-weight: 800; text-transform: uppercase; color: var(--pervye-black); margin-top: 20px; margin-bottom: 10px;">🏆 Цифровые знаки отличия</div>
+                    <div class="row g-2">
+                        <div class="col-sm-6">
+                            <div style="background: #FFFFFF; border: 2px solid var(--pervye-blue); border-radius: 3px; padding: 12px; display: flex; align-items: center; gap: 12px; height: 100%;">
+                                <div style="font-size: 24px;">🚀</div>
+                                <div>
+                                    <div style="font-size: 12px; font-weight: 800; text-transform: uppercase; color: var(--pervye-black); line-height: 1.2;">Старт в Движении</div>
+                                    <div style="font-size: 10px; color: #16A34A; font-weight: 700; text-transform: uppercase; margin-top: 1px;">⚡ Получено (+100 XP)</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div style="background: #FFFFFF; border: 2px solid var(--pervye-blue); border-radius: 3px; padding: 12px; display: flex; align-items: center; gap: 12px; height: 100%;">
+                                <div style="font-size: 24px;">🔥</div>
+                                <div>
+                                    <div style="font-size: 12px; font-weight: 800; text-transform: uppercase; color: var(--pervye-black); line-height: 1.2;">Первопроходец</div>
+                                    <div style="font-size: 10px; color: #16A34A; font-weight: 700; text-transform: uppercase; margin-top: 1px;">⚡ Получено (+150 XP)</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div> <!-- Конец правой колонки col-lg-8 -->
+            
+        </div> <!-- Конец строки row -->
+    </div> <!-- Конец контейнера container -->
+
+    <!-- ПОДВАЛ ПО БРЕНДБУКУ -->
+    <footer class="footer py-4 bg-white border-top mt-auto" style="border-color: #E2E8F0 !important; width: 100%;">
+        <div class="container text-center">
+            <span style="color: var(--text-slate); font-size: 13px; font-weight: 600;">© 2026 Движение Первых. Официальная образовательная экосистема платформы.</span>
+        </div>
+    </footer>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+     
+
+
+
+

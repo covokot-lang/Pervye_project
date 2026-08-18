@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Предложить материал — Движение Первых</title>
+    <link rel="preconnect" href="https://googleapis.com">
+    <link rel="preconnect" href="https://gstatic.com" crossorigin>
+    <link href="https://googleapis.com/css2?family=Montserrat:wght@500;700&family=Unbounded:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root { --pervye-red: #d90912; --pervye-blue: #3366CC; --bg-light: #F8FAFC; }
+        body { background-color: var(--bg-light); font-family: "Montserrat", sans-serif; padding: 40px 20px; }
+        .form-card { max-width: 600px; margin: 0 auto; background: white; border: 2px solid #E2E8F0; border-radius: 12px; padding: 40px; position: relative; }
+        .form-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 6px; background: var(--pervye-red); border-radius: 12px 12px 0 0; }
+        h2 { font-family: "Unbounded", sans-serif; font-size: 18px; margin-bottom: 24px; text-transform: uppercase; color: var(--pervye-blue); }
+        .form-group { margin-bottom: 20px; }
+        label { display: block; font-size: 13px; font-weight: 700; margin-bottom: 8px; text-transform: uppercase; }
+        input, textarea { width: 100%; border: 2px solid #E2E8F0; padding: 12px; border-radius: 8px; font-family: "Montserrat", sans-serif; font-size: 14px; outline: none; }
+        input:focus, textarea:focus { border-color: var(--pervye-blue); }
+        .btn-submit { background: var(--pervye-blue); color: white; border: none; padding: 14px 28px; border-radius: 8px; font-weight: 700; text-transform: uppercase; cursor: pointer; font-size: 13px; }
+        .btn-submit:hover { background: #2552A3; }
+        .back { color: #64748B; text-decoration: none; font-size: 14px; display: inline-block; margin-top: 20px; }
+    </style>
+</head>
+<body>
+
+    <div class="form-card">
+        <h2>Новая публикация на модерацию</h2>
+        <form method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                <label>Заголовок материала</label>
+                <input type="text" name="title" required placeholder="Например: Как мы открыли медиацентр в школе">
+            </div>
+            <div class="form-group">
+                <label>Текст статьи / Описание проекта</label>
+                <textarea name="text" rows="8" required placeholder="Напиши свой лонгрид или поделись опытом..."></textarea>
+            </div>
+            <button type="submit" class="btn-submit">Отправить модераторам</button>
+        </form>
+        <a href="/profile/" class="back">← Вернуться без сохранения</a>
+    </div>
+
+</body>
+</html>
