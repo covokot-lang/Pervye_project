@@ -1,16 +1,10 @@
-"""
-WSGI config for pervye_platform project.
+services:
+  - type: web
+    name: Pervye_project
+    runtime: python
+    buildCommand: pip install -r requirements.txt && python manage.py collectstatic --noinput
+    startCommand: gunicorn pervye_site.pervye_platform.wsgi:application
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.10.12
 
-It exposes the WSGI callable as a module-level variable named ``application``.
-
-For more information on this file, see
-https://docs.djangoproject.com/en/6.0/howto/deployment/wsgi/
-"""
-
-import os
-
-from django.core.wsgi import get_wsgi_application
-
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'pervye_platform.settings')
-
-application = get_wsgi_application()
