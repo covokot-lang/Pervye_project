@@ -1,10 +1,8 @@
-services:
-  - type: web
-    name: Pervye_project
-    runtime: python
-    buildCommand: pip install -r requirements.txt && python manage.py collectstatic --noinput
-    startCommand: gunicorn pervye_site.pervye_platform.wsgi:application
-    envVars:
-      - key: PYTHON_VERSION
-        value: 3.10.12
+import os
+
+from django.core.wsgi import get_wsgi_application
+
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'pervye_platform.settings')
+
+application = get_wsgi_application()
 
